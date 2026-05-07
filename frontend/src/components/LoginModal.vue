@@ -45,8 +45,8 @@ async function handleSubmit() {
           <h3 class="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">{{ tab === "login" ? "登录" : "注册" }}</h3>
 
           <div class="flex gap-2 mt-4">
-            <button @click="tab = 'login'" :class="tab === 'login' ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900' : 'text-zinc-400 hover:text-zinc-600'" class="flex-1 py-2 text-sm rounded-lg font-medium transition-all btn-apple">登录</button>
-            <button @click="tab = 'register'" :class="tab === 'register' ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900' : 'text-zinc-400 hover:text-zinc-600'" class="flex-1 py-2 text-sm rounded-lg font-medium transition-all btn-apple">注册</button>
+            <button @click="tab = 'login'" :class="tab === 'login' ? 'bg-emerald-600 text-white dark:bg-emerald-500' : 'text-zinc-400 hover:text-zinc-600'" class="flex-1 py-2 text-sm rounded-lg font-medium transition-all btn-apple">登录</button>
+            <button @click="tab = 'register'" :class="tab === 'register' ? 'bg-emerald-600 text-white dark:bg-emerald-500' : 'text-zinc-400 hover:text-zinc-600'" class="flex-1 py-2 text-sm rounded-lg font-medium transition-all btn-apple">注册</button>
           </div>
 
           <form @submit.prevent="handleSubmit" class="mt-4 space-y-3">
@@ -59,7 +59,7 @@ async function handleSubmit() {
             <input v-model="password" type="password" placeholder="密码" required class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-transparent text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:focus:ring-zinc-700" />
             <p v-if="error" class="text-red-400 text-sm">{{ error }}</p>
             <p v-if="successMsg" class="text-green-500 text-sm">{{ successMsg }}</p>
-            <button type="submit" :disabled="submitting" class="btn-apple w-full py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-medium text-sm hover:opacity-80 transition-all disabled:opacity-40">
+            <button type="submit" :disabled="submitting" class="btn-apple w-full py-2.5 rounded-xl bg-emerald-600 text-white dark:bg-emerald-500 font-medium text-sm hover:opacity-80 transition-all disabled:opacity-40">
               {{ submitting ? "处理中..." : tab === "login" ? "登录" : "注册" }}
             </button>
           </form>

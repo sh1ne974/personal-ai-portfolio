@@ -53,7 +53,7 @@ async function sendQuestion(question: string) {
 
           <div v-for="(msg, i) in messages" :key="i" :class="msg.role === 'user' ? 'flex justify-end' : 'flex justify-start'">
             <div :class="msg.role === 'user'
-                ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 rounded-2xl rounded-br-md'
+                ? 'bg-emerald-600 text-white dark:bg-emerald-500 rounded-2xl rounded-br-md'
                 : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-2xl rounded-bl-md'"
               class="max-w-[82%] px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap">
               {{ msg.content }}
@@ -78,7 +78,7 @@ async function sendQuestion(question: string) {
             :disabled="loading"
             class="flex-1 px-4 py-2.5 rounded-xl border-0 bg-transparent text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none disabled:opacity-50" />
           <button @click="sendQuestion(input)" :disabled="loading || !input.trim()"
-            class="btn-apple px-5 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-sm font-medium hover:opacity-80 transition-opacity disabled:opacity-40">
+            class="btn-apple px-5 py-2.5 rounded-xl bg-emerald-600 text-white dark:bg-emerald-500 text-sm font-medium hover:opacity-80 transition-opacity disabled:opacity-40">
             发送
           </button>
         </div>

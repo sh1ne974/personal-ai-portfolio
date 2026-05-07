@@ -64,7 +64,7 @@ async function handleDelete(id: number) {
         <div class="flex items-center justify-between">
           <span class="text-xs text-zinc-400">{{ content.length }}/500</span>
           <button type="submit" :disabled="submitting || !content.trim()"
-            class="btn-apple px-5 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-sm font-medium hover:opacity-80 disabled:opacity-40 transition-all">
+            class="btn-apple px-5 py-2.5 rounded-xl bg-emerald-600 text-white dark:bg-emerald-500 text-sm font-medium hover:opacity-80 disabled:opacity-40 transition-all">
             {{ submitting ? "提交中..." : "发表留言" }}
           </button>
         </div>
@@ -73,7 +73,7 @@ async function handleDelete(id: number) {
 
       <div v-else class="reveal-section mt-10 glass rounded-2xl p-8 text-center" style="transition-delay:0.1s">
         <p class="text-sm text-zinc-500 mb-4">请先登录后再发表留言</p>
-        <button @click="openLogin" class="btn-apple px-6 py-2.5 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-sm font-medium hover:opacity-80">立即登录</button>
+        <button @click="openLogin" class="btn-apple px-6 py-2.5 rounded-full bg-emerald-600 text-white dark:bg-emerald-500 text-sm font-medium hover:opacity-80">立即登录</button>
       </div>
 
       <!-- List -->

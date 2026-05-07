@@ -46,7 +46,7 @@ async function handleSubmit() {
         <textarea v-model="message" placeholder="写下你想说的话..." required maxlength="1000" rows="4" class="w-full px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:focus:ring-zinc-700 resize-none" />
         <p v-if="feedback" :class="feedback.type === 'success' ? 'text-green-500' : 'text-red-400'" class="text-sm">{{ feedback.text }}</p>
         <button type="submit" :disabled="submitting || !name.trim() || !email.trim() || !message.trim()"
-          class="btn-apple w-full py-3 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-medium text-sm hover:opacity-80 disabled:opacity-40 transition-all">
+          class="btn-apple w-full py-3 rounded-xl bg-emerald-600 text-white dark:bg-emerald-500 font-medium text-sm hover:opacity-80 disabled:opacity-40 transition-all">
           {{ submitting ? "发送中..." : "发送消息" }}
         </button>
       </form>

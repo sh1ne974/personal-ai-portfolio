@@ -46,7 +46,7 @@ const navItems = [
           {{ user.username }}
         </button>
         <button v-else @click="openLogin"
-          class="ml-1 px-4 py-1.5 text-[13px] font-medium bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 rounded-full hover:opacity-80 transition-opacity btn-apple">
+          class="ml-1 px-4 py-1.5 text-[13px] font-medium bg-emerald-600 text-white dark:bg-emerald-500 rounded-full hover:opacity-80 transition-opacity btn-apple">
           登录
         </button>
       </div>
