@@ -1,52 +1,78 @@
 @import "tailwindcss";
 
+/* ===== Color System ===== */
 :root {
-  --glass-bg: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(0, 0, 0, 0.06);
-  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  --bg: #fdfbf9;
+  --text: #1a1a1a;
+  --text-muted: #5a5a5a;
+  --text-faint: #9c9c9c;
+  --accent: #3b2eff;
+  --accent-hover: #2d24cc;
+  --border: rgba(0, 0, 0, 0.06);
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.3);
 }
 
 .dark {
-  --glass-bg: rgba(15, 23, 42, 0.6);
+  --bg: #05050a;
+  --text: #f0f0f0;
+  --text-muted: #a0a0b0;
+  --text-faint: #606070;
+  --accent: #6c5ce7;
+  --accent-hover: #7d6ff0;
+  --border: rgba(255, 255, 255, 0.06);
+  --glass-bg: rgba(20, 20, 35, 0.5);
   --glass-border: rgba(255, 255, 255, 0.06);
-  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
+/* ===== Base ===== */
 body {
   margin: 0;
-  background: #fff;
-  color: #1e293b;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background 0.4s ease, color 0.4s ease;
+  letter-spacing: -0.01em;
+  transition: background 0.5s ease, color 0.5s ease;
 }
 
-.dark body,
-body.dark {
-  background: #020617;
-  color: #e2e8f0;
-}
-
-/* Dark mode subtle grid texture */
-.dark body::before {
+/* Subtle paper grain texture — light mode */
+body::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.02) 0%, transparent 70%);
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+.dark body::after { opacity: 0.06; }
+
+/* Diffused light blobs */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(59, 46, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 60%, rgba(59, 46, 255, 0.02) 0%, transparent 50%);
+}
+.dark body::before {
+  background:
+    radial-gradient(ellipse at 15% 15%, rgba(108, 92, 231, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 55%, rgba(108, 92, 231, 0.04) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 80%, rgba(108, 92, 231, 0.03) 0%, transparent 50%);
 }
 
-/* Scroll reveal animations */
+/* ===== Scroll Reveal ===== */
 .reveal-section {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal-section.revealed {
   opacity: 1;
@@ -55,41 +81,50 @@ body.dark {
 
 .reveal-card {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal-card.revealed {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Glass morphism */
+/* ===== Glass Morphism (reserved for cards only) ===== */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 6px; }
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
-.dark ::-webkit-scrollbar-thumb { background: #334155; }
+::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 3px; }
+.dark ::-webkit-scrollbar-thumb { background: #3a3a50; }
 
-/* Selection */
-::selection { background: rgba(16, 185, 129, 0.15); }
-.dark ::selection { background: rgba(16, 185, 129, 0.2); }
+/* ===== Selection ===== */
+::selection { background: rgba(59, 46, 255, 0.12); color: var(--text); }
+.dark ::selection { background: rgba(108, 92, 231, 0.25); }
 
-/* Button hover */
-.btn-apple {
-  transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+/* ===== Button Interaction ===== */
+.btn-accent {
+  transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+  position: relative;
 }
-.btn-apple:hover {
-  transform: scale(1.02);
+.btn-accent:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(59, 46, 255, 0.3);
 }
-.btn-apple:active {
-  transform: scale(0.98);
+.btn-accent:active {
+  transform: scale(0.97);
+}
+
+.btn-ghost {
+  transition: all 0.25s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
