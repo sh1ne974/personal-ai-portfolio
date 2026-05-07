@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
+import { findUserByUsername } from "@/lib/store";
 import bcrypt from "bcryptjs";
 import * as jose from "jose";
 
@@ -22,10 +22,7 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "用户名和密码不能为空" }, { status: 400 });
     }
 
-    const db = getDb();
-    const user = db.prepare("SELECT * FROM users WHERE username = ?").get(username) as
-      | { id: number; username: string; password_hash: string; is_admin: number; email: string; phone: string }
-      | undefined;
+    const user = findUserByUsername(username);
 
     if (!user || !bcrypt.compareSync(password, user.password_hash)) {
       return Response.json({ error: "用户名或密码错误" }, { status: 401 });
@@ -43,7 +40,8 @@ export async function POST(request: NextRequest) {
         phone: user.phone || "",
       },
     });
-  } catch {
-    return Response.json({ error: "请求格式错误" }, { status: 400 });
+  } catch (err) {
+    console.error("Login error:", err);
+    return Response.json({ error: "服务器错误，请稍后重试" }, { status: 500 });
   }
 }

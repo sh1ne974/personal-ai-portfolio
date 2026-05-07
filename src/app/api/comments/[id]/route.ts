@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
+import { deleteComment } from "@/lib/store";
 import * as jose from "jose";
 
 const SECRET = new TextEncoder().encode(
@@ -27,10 +27,9 @@ export async function DELETE(
   }
 
   const { id } = await params;
-  const db = getDb();
-  const result = db.prepare("DELETE FROM comments WHERE id = ?").run(id);
+  const deleted = deleteComment(parseInt(id));
 
-  if (result.changes === 0) {
+  if (!deleted) {
     return Response.json({ error: "留言不存在" }, { status: 404 });
   }
 

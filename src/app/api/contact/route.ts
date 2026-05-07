@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
+import { createContact } from "@/lib/store";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,13 +13,16 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "留言内容不能超过 1000 字" }, { status: 400 });
     }
 
-    const db = getDb();
-    db.prepare(
-      "INSERT INTO contacts (name, email, phone, message) VALUES (?, ?, ?, ?)"
-    ).run(name.trim(), email.trim(), phone?.trim() || "", message.trim());
+    createContact({
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone?.trim() || "",
+      message: message.trim(),
+    });
 
     return Response.json({ message: "留言已提交，感谢你的联系！" });
-  } catch {
-    return Response.json({ error: "请求格式错误" }, { status: 400 });
+  } catch (err) {
+    console.error("Contact error:", err);
+    return Response.json({ error: "服务器错误，请稍后重试" }, { status: 500 });
   }
 }

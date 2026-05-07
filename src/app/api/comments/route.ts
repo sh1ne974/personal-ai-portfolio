@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
+import { getComments, createComment } from "@/lib/store";
 import * as jose from "jose";
 
 const SECRET = new TextEncoder().encode(
@@ -18,8 +18,7 @@ async function getAuthUser(request: NextRequest): Promise<{ userId: number; user
 }
 
 export async function GET() {
-  const db = getDb();
-  const comments = db.prepare("SELECT * FROM comments ORDER BY created_at DESC LIMIT 50").all();
+  const comments = getComments();
   return Response.json({ comments });
 }
 
@@ -40,20 +39,11 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "留言内容不能超过 500 字" }, { status: 400 });
     }
 
-    const db = getDb();
-    const result = db
-      .prepare("INSERT INTO comments (author_name, content) VALUES (?, ?)")
-      .run(authUser.username, content.trim());
+    const comment = createComment(authUser.username, content.trim());
 
-    return Response.json({
-      comment: {
-        id: result.lastInsertRowid,
-        author_name: authUser.username,
-        content: content.trim(),
-        created_at: new Date().toISOString(),
-      },
-    });
-  } catch {
-    return Response.json({ error: "请求格式错误" }, { status: 400 });
+    return Response.json({ comment });
+  } catch (err) {
+    console.error("Comment POST error:", err);
+    return Response.json({ error: "服务器错误，请稍后重试" }, { status: 500 });
   }
 }

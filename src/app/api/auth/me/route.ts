@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
+import { findUserById } from "@/lib/store";
 import * as jose from "jose";
 
 const SECRET = new TextEncoder().encode(
@@ -23,11 +23,7 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: "未登录" }, { status: 401 });
   }
 
-  const db = getDb();
-  const user = db.prepare("SELECT id, username, is_admin, email, phone FROM users WHERE id = ?").get(payload.userId) as
-    | { id: number; username: string; is_admin: number; email: string; phone: string }
-    | undefined;
-
+  const user = findUserById(payload.userId);
   if (!user) {
     return Response.json({ error: "用户不存在" }, { status: 404 });
   }

@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
+import { findUserByUsername, createUser } from "@/lib/store";
 import bcrypt from "bcryptjs";
 
 export async function POST(request: NextRequest) {
@@ -22,28 +22,24 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "密码至少 6 个字符" }, { status: 400 });
     }
 
-    const db = getDb();
-
-    const existing = db.prepare("SELECT id FROM users WHERE username = ?").get(username);
-    if (existing) {
+    if (findUserByUsername(username)) {
       return Response.json({ error: "用户名已存在" }, { status: 409 });
     }
 
-    const passwordHash = bcrypt.hashSync(password, 10);
-    const result = db
-      .prepare("INSERT INTO users (username, password_hash, email, phone) VALUES (?, ?, ?, ?)")
-      .run(username, passwordHash, email?.trim() || "", phone?.trim() || "");
+    const newUser = createUser({
+      username,
+      password_hash: bcrypt.hashSync(password, 10),
+      email: email?.trim() || "",
+      phone: phone?.trim() || "",
+      is_admin: 0,
+    });
 
     return Response.json({
       message: "注册成功",
-      user: {
-        id: result.lastInsertRowid,
-        username,
-        email: email?.trim() || "",
-        phone: phone?.trim() || "",
-      },
+      user: { id: newUser.id, username, email: newUser.email, phone: newUser.phone },
     });
-  } catch {
-    return Response.json({ error: "请求格式错误" }, { status: 400 });
+  } catch (err) {
+    console.error("Register error:", err);
+    return Response.json({ error: "服务器错误，请稍后重试" }, { status: 500 });
   }
 }
