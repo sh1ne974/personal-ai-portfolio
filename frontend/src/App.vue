@@ -1,12 +1,19 @@
 <script setup lang="ts">
-import { ref, provide } from "vue";
+import { ref, provide, watchEffect } from "vue";
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
 import LoginModal from "./components/LoginModal.vue";
+import BackToTop from "./components/BackToTop.vue";
 
 const loginOpen = ref(false);
 const user = ref<any>(null);
 const token = ref<string | null>(localStorage.getItem("token"));
+const isDark = ref(localStorage.getItem("theme") === "dark");
+
+watchEffect(() => {
+  document.documentElement.classList.toggle("dark", isDark.value);
+  localStorage.setItem("theme", isDark.value ? "dark" : "light");
+});
 
 // Restore session
 if (token.value) {
@@ -34,16 +41,20 @@ function onLogout() {
 
 provide("user", user);
 provide("token", token);
+provide("isDark", isDark);
 provide("onLoginSuccess", onLoginSuccess);
 provide("onLogout", onLogout);
 provide("openLogin", () => (loginOpen.value = true));
 </script>
 
 <template>
-  <Navbar />
-  <main class="flex-1">
-    <router-view />
-  </main>
-  <Footer />
-  <LoginModal :open="loginOpen" @close="loginOpen = false" @login-success="onLoginSuccess" />
+  <div class="min-h-screen flex flex-col" :class="{ dark: isDark }">
+    <Navbar />
+    <main class="flex-1">
+      <router-view />
+    </main>
+    <Footer />
+    <BackToTop />
+    <LoginModal :open="loginOpen" @close="loginOpen = false" />
+  </div>
 </template>
